@@ -1,0 +1,15 @@
+.grid{
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--black2);
+  z-index: 10;
+}
+
+.logo{
+  font-size: 60px;
+  color: var(--white);
+}
+

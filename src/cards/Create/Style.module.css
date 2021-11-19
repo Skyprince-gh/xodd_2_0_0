@@ -1,0 +1,182 @@
+.form{
+  height: 100px;
+  width: 98%;
+  display: flex;
+  z-index: 5;
+  background: var(--grey);
+  margin: 10px auto;
+  user-select: none;
+  margin-bottom: 10px;
+  padding: 0px 20px;
+  justify-content: space-around;
+  /* position: absolute; */
+  /* left: 5%; */
+}
+
+.formDelete{
+  border: solid red 2px;
+}
+
+.form_group{
+  height: 100%;
+}
+
+
+/* Teams */
+.form_teams{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: space-around;
+ width: 30%;
+}
+
+.form_teams input{
+  height: 30px;
+  background: var(--black2);
+  outline: none;
+  border: none;
+  display: block;
+  width: 45%;
+  text-align: center;
+  color: var(--green)
+}
+
+
+.form_teams p{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.form_group{
+  max-width: 20%;
+}
+
+/* Time */
+
+.form_time{
+  height: 100%;
+  width: 10%;
+  display: flex;
+  flex-direction:column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.form_time input{
+  display:block;
+  width: 90%;
+  height: 30px;
+  background: var(--black2);
+  border: none;
+  outline: none;
+  color: var(--green)
+}
+/* Prediction  and Percentage*/
+
+.form_prediction, .form_percentage{
+  height: 100%;
+  width: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align:center;
+}
+
+.form_prediction input, 
+.form_percentage input, 
+.form_prediction select {
+  height: 30px;
+  background: var(--black2);
+  outline: none;
+  border: none;
+  display: flex;
+  width: 90%;
+  text-align: center;
+  appearance: none;
+  justify-content: center;
+  color: var(--green)
+}
+
+.form_prediction select{
+  padding-left: 20px;
+}
+
+
+/* Odds */
+.form_odds{
+  height: 100%;
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align:center;
+}
+
+.form_odds h3{
+  position:relative;
+  top: 5px;
+}
+
+.odds{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  position: relative;
+  bottom: 5px;
+}
+
+.odd{
+  width: auto;
+  display: flex;
+  margin: auto 5px;
+  flex-direction: column;
+  align-items: center
+}
+
+.odd input{
+  display: block;
+  width: 60px;
+  height: 30px;
+  background: var(--black2);
+  outline: none;
+  border: none;
+  text-align: center;
+  color: var(--green)
+}
+
+/* Scores */
+.form_scores{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  width: 10%;
+}
+.form_scores p{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form_scores span{
+  display: flex;
+  width: 20px;
+  justify-content: center;
+}
+
+.form_scores p input{
+  display: block;
+  width: 40px;
+  height: 30px;
+  background: var(--black2);
+  outline: none;
+  border: none;
+  text-align: center;
+  color: var(--green)
+}
+

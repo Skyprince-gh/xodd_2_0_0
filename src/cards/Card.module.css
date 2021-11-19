@@ -1,0 +1,90 @@
+.grid{
+  height: 70px;
+  width: 98%;
+  display: flex;
+  z-index: 5;
+  background: var(--grey);
+  margin: 10px auto;
+  user-select: none;
+}
+
+.gridEdit {
+  border: solid var(--blue) 2px;
+}
+
+.grp{
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0px 10px;
+  padding-right: 0px;
+}
+
+.grp_scores{
+  display: flex;
+  width: 20%;
+  height: 100%;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 0px 30px; */
+  padding-left: 50px;
+}
+
+.grp h3, .grp_scores h3{
+  color: var(--green2)
+}
+
+.odds{
+  display: flex;
+  justify-content: space-around;
+}
+
+
+
+.odds{
+  display: flex;
+  width: 100%;
+}
+
+.odd{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 13px;
+}
+
+.odd h4{
+  font-size: 14px;
+}
+
+.scores{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 20%;
+  height: 100%;
+  /* align-items: center; */
+  padding: 0px 10px;
+  padding-right: 0px;
+}
+
+.scores p {
+  width: 150px;
+  text-align: center;
+}
+
+.validation_red{
+  height: 100%;
+  width: 20px;
+  background: var(--red);
+}
+
+.validation_green{
+  height: 100%;
+  width: 20px;
+  background: var(--green);
+}

@@ -1,0 +1,39 @@
+.grid{
+  height: 70%;
+  width: 70%;
+  z-index: 1;
+  background: var(--black2);
+  margin: 10% auto;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;  
+}
+
+.main{
+  height: 80%;
+  overflow-y:scroll;
+  appearance: none;
+  
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--black); 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--grey); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--black2); 
+}
+

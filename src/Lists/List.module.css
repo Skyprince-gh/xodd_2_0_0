@@ -1,0 +1,19 @@
+.li{
+  list-style-type: none;
+  text-decoration: none;
+}
+
+.prompt{
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: var(--green2);
+  user-select: none;
+}
+
+.prompt svg {
+  font-size: 30px;
+  fill: white;
+}

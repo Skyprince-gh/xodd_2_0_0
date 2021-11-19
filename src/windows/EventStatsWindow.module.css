@@ -1,0 +1,48 @@
+.form_stats{
+  width: 100vw;
+  height: 100vh;
+  background: var(--cover);
+  position: absolute;
+  top:0px;
+  left: 0px;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form_stats_window{
+  width:500px;
+  height: 500px;
+  background: var(--grey);
+  padding: 30px;
+  display: flex;
+  flex-direction:column;
+  justify-content: space-between;
+}
+
+.form_stats_scores{
+  height: 80%;
+  overflow-y: scroll;
+}
+
+.stats_controls{
+  height: 10%;
+  width: 100%;
+  display:flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.stats_controls button{
+  background: none;
+  border: var(--green2) solid 2px;
+  color: var(--green2);
+  outline: none;
+  margin: 0 10px;
+}
+
+.stats_controls button:hover{
+  border-color: var(--green);
+  color: var(--green)
+}

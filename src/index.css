@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+:root{
+  --white: #fff;
+  --black: #000;
+  --grey: #3a3a3a;
+  --red: #ff7171;
+  --green: #3cff00;
+  --green2: #176100;
+  --black2: #242424;
+  --cover: rgba(0,0,0,0.2);
+  --blue: #255ad6;
+}

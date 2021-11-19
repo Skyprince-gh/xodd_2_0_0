@@ -1,0 +1,74 @@
+.menu{
+  padding: 20px 20px 0px 20px;
+  height: 10%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+  margin-bottom: 20px;
+}
+
+.menu form {
+  display: flex;
+  width: 80%;
+  height: 100%;
+  justify-content: flex-start;
+}
+.menu_group{
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+  align-items: center;
+}
+
+
+.menu_group select, .menu_group input[type="date"]{
+  display: block;
+  height: 30px;
+  border: none;
+  appearance: none;
+  width: 90%;
+  background-color: var(--grey);
+  padding-left: 20px;
+  outline: none;
+}
+
+.menu_group label{
+  height: 30px;
+  display:block;
+  color: var(--green2)
+}
+
+.main{
+  padding-top: 20px;
+  width: 100px;
+  height: auto;
+}
+
+.close{
+  width: 10%;
+  height: 100%;
+  display: flex; 
+  justify-content: flex-end;
+  align-items:  center;
+}
+
+.close button{
+  color: var(--green2);
+  font-size: 20px;
+  font-weight: bolder;
+  background: none;
+  border: solid var(--green2) 3px;
+  border-radius: 15px;
+  width: 30px;
+  height: 30px;
+  transition: .5s;
+}
+
+.close button:hover{
+  color: var(--green);
+  border-color: var(--green);
+  outline: none;
+}

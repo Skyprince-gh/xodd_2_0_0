@@ -1,0 +1,30 @@
+.grid{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 10%;
+  width: 100%;
+  padding: 0px 30px;
+}
+
+.grid button{
+  border-radius: 30px;
+  width: 30px;
+  height: 30px;
+  border: solid 2px var(--green2);
+  background: none;
+  color: var(--green2);
+  outline: none;
+  margin: 0 10px;
+  transition: .4s
+}
+
+.grid button:hover{
+  color: var(--green);
+  border-color: var(--green);
+}
+
+.red svg{
+  color: var(--red);
+}
+

@@ -1,0 +1,31 @@
+.form_stats_goal{
+  display: flex;
+  width: 100%;
+  height: 40px;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin: 20px 0px;
+}
+
+.deleteMode{
+  border: var(--red) solid 1px;
+  padding: 10px;
+  height: 60px;
+}
+
+.form_stats_goal select, .form_stats_goal input{
+  display: flex;
+  width: 45%;
+  outline:none;
+  background: var(--black2);
+  border: none;
+  appearance: none;
+  color: var(--green);
+  padding: 0px 10px;
+}
+
+input::-webkit-outer-spin-button, 
+input::-webkit-inner-spin-button{
+  appearance: none;
+}
+
