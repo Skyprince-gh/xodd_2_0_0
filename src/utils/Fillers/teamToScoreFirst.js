@@ -1,8 +1,36 @@
 import findBestMatch from "../findBestMatch";
 
 //this function simply fills in the entry in the selected object.
-const fill = (convertedBatch, events, fileName) => {
-  convertedBatch.forEach(entry => { // loop throgh the entire batch
+const fill = (convertedBatch, events) => {
+
+  console.log('converted Batch team to score first activated:', convertedBatch, events);
+
+  const extractedBatches = [];
+  const mergedBatches = []; //stores the extracted batches array into a singlar array.
+
+  const remainingBatches = convertedBatch.filter(batchObject => {
+    if (batchObject.category === 'team-to-score-first') {
+      extractedBatches.push(batchObject)
+      return false;
+    }
+    else return true;
+  })
+
+  //this section of code gets the extracted batch into a single array so reading can be easier
+  extractedBatches.forEach(batch => {
+    batch.storageBatch.forEach(b => {
+      mergedBatches.push(b);
+    })
+  })
+
+  console.log('remaining batches:', remainingBatches);
+
+  console.log('extracted Batches:', extractedBatches);
+
+  console.log('merged Batches:', mergedBatches);
+
+
+  mergedBatches.forEach(entry => { // loop throgh the entire batch
 
     const bestMatchIndex = findBestMatch(entry, events);
     const current = events[bestMatchIndex];
@@ -26,7 +54,7 @@ const fill = (convertedBatch, events, fileName) => {
 
   })
 
-  return events
+  return {events , sorted: remainingBatches}
 }
 
 export default fill;

@@ -2,11 +2,39 @@ import findBestMatch from "../findBestMatch";
 
 //this function simply fills in the entry in the selected object.
 const fill = async (convertedBatch, events) => {
-  convertedBatch.forEach(entry => { // loop throgh the entire batch
+
+  console.log('converted Batch over three point five activated:', convertedBatch, events);
+
+  const extractedBatches = [];
+  const mergedBatches = []; //stores the extracted batches array into a singlar array.
+
+  const remainingBatches = convertedBatch.filter(batchObject => {
+    if (batchObject.category === 'over-under-3.5') {
+      extractedBatches.push(batchObject)
+      return false;
+    }
+    else return true;
+  })
+
+  //this section of code gets the extracted batch into a single array so reading can be easier
+  extractedBatches.forEach(batch => {
+    batch.storageBatch.forEach(b => {
+      mergedBatches.push(b);
+    })
+  })
+
+  console.log('remaining batches:', remainingBatches);
+
+  console.log('extracted Batches:', extractedBatches);
+
+  console.log('merged Batches:', mergedBatches);
+
+
+  mergedBatches.forEach(entry => { // loop throgh the entire batch
 
     const bestMatchIndex = findBestMatch(entry, events);
     const current = events[bestMatchIndex];
-    
+
     current.over_three_point_five.percentage = +entry.percentage.split('%')[0]; //get the percentage in string format and then convert it to number after spliting the % sign from it
     current.over_three_point_five.odds.over = +entry.odds.over;
     current.over_three_point_five.odds.under = +entry.odds.under;
@@ -21,7 +49,7 @@ const fill = async (convertedBatch, events) => {
 
   })
 
-  return events
+  return {events , sorted: remainingBatches}
 }
 
 export default fill;

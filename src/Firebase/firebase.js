@@ -1,5 +1,5 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore'
+import {initializeApp} from 'firebase/app'
+import { getFirestore, collection, getDocs, query, addDoc, where, doc, setDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBW2iYBruhcBbjwI3qtNtTSVa79159X1VE",
@@ -11,9 +11,26 @@ const firebaseConfig = {
   measurementId: "G-8VSK6S6D37"
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const db =  firebase.firestore() 
-db.settings({timestampsInSnapshots: true})
+const db =  getFirestore(app) 
 
-export default db;
+export const queryData = async (_collection, ...params) => {
+  const dataQuery = query(
+    collection(db, _collection),
+    where(...params)
+  )
+
+  const querySnapshot = await getDocs(dataQuery);
+  return querySnapshot
+}
+
+export const addDocument = async (_collection, data) => {
+  const docRef = await addDoc(collection(db, _collection), data)
+  return docRef
+}
+
+export const setDocument = async (_collection, documentID, data) => {
+  const response = await setDoc(doc(db, _collection, documentID), data);
+  return response
+}

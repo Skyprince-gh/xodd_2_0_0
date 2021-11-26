@@ -1,4 +1,4 @@
-import db from '../Firebase/firebase'
+import {addDocument,setDocument} from '../Firebase/firebase'
 import {Convert} from '../utils/firebaseConverter'
 
 
@@ -55,9 +55,10 @@ const upload = () => {
       const porter = JSON.parse(localStorage.getItem('xoddPackagePorter'))
       const convertedTable = Convert(porter.table)
 
-      db.collection('match_event_tables').doc(package_porter.id).set(convertedTable).then(response => {
-        console.log('updated data: ', convertedTable, new Date())
-        localStorage.setItem('xoddPackagePorter', JSON.stringify(current_table))
+      setDocument('match_event_tables',package_porter.id,convertedTable).then(response => {
+          console.log('updated data: ', convertedTable, new Date())
+          localStorage.setItem('xoddPackagePorter', JSON.stringify(current_table))
+
       })
     }
     // else exit.
@@ -77,7 +78,7 @@ const upload = () => {
     if(current_table.id.trim() !== ''){
       const porter = JSON.parse(localStorage.getItem('xoddPackagePorter'))
       const convertedTable = Convert(porter.table)      
-      db.collection('match_event_tables').add(convertedTable)
+      addDocument('match_event_tables',convertedTable);
     }
 
     return

@@ -1,6 +1,7 @@
 import stringSimilarity from 'string-similarity';
 
 const findBestMatch = (entry, events) => {
+  // console.log('entry and events:', entry, events)
   const teams = entry.home + ' v ' + entry.away;
   const arr = [];
   events.forEach(event => {

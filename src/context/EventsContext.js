@@ -1,9 +1,9 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { MatchEventObject } from '../utils/dataObjects';
 import { validateScores } from '../utils/validation';
-import db from '../Firebase/firebase';
-import {Convert} from '../utils/firebaseConverter';
-import {batchConverter} from '../utils/batchConverter';
+import { queryData, addDocument } from '../Firebase/firebase';
+import { Convert } from '../utils/firebaseConverter';
+import { batchConverter } from '../utils/batchConverter';
 
 export const EventsContext = createContext();
 
@@ -51,7 +51,7 @@ const EventsDataProvider = (props) => {
   const toggleEventsWindow = () => {
     // sets the event window to active or inactive this changes the mode of the app. 
     seteventsWindowIsActive(!eventsWindowIsActive);
-  } 
+  }
 
   const toggleEditMode = () => {
     setEditActive(!editIsActive);
@@ -105,7 +105,7 @@ const EventsDataProvider = (props) => {
     localStorage.setItem('xoddNewTable', JSON.stringify(table))
   }
 
-  const saveNewTable = () => {
+  const saveNewTable = async () => {
     alert('Table will be saved')
     const anotherTable = [...newTable]
     // console.log('this the data that I want to convert: ',newTable)
@@ -113,24 +113,21 @@ const EventsDataProvider = (props) => {
 
     const convertedTable = Convert(anotherTable)
 
-    console.log('converted Table: ',convertedTable)
+    console.log('converted Table: ', convertedTable)
     // Save the table that you have created. You can also create a feature to edit the table as well.\
-    db.collection('match_event_tables').add(convertedTable)
-    .then(response => {
-      localStorage.setItem('xoddCurrentTable', JSON.stringify({ id: response.id, table: newTable }));
-      localStorage.setItem('xoddPackagePorter', JSON.stringify({ id: response.id, table: newTable }));
-      localStorage.setItem('xoddNewTable', JSON.stringify([]));//reset storage location      
-      setNewTable([]);
-      window.location.reload();
-    })
-    .catch(error => {
-      console.log("error: ", error)
-    })  
+    const response = await addDocument('match_event_tables', convertedTable);
+
+    localStorage.setItem('xoddCurrentTable', JSON.stringify({ id: response.id, table: newTable }));
+    localStorage.setItem('xoddPackagePorter', JSON.stringify({ id: response.id, table: newTable }));
+    localStorage.setItem('xoddNewTable', JSON.stringify([]));//reset storage location      
+    setNewTable([]);
+    window.location.reload();
+
   }
 
-  // const getTableFromDB = () => {
-
-  // }
+  const loadNewTable = (table) => {
+    setNewTable(table);
+  }
 
   //this function is triggered anytime the date in the seach parameters is changed
   const changeSearchTarget = (date) => {
@@ -139,15 +136,16 @@ const EventsDataProvider = (props) => {
   }
 
   //this function is triggered when the search button is pressed.
-  const search = () => {
+  const search = async () => {
     const batchArray = [];
-     db.collection('batch_data').where('fileName', '==', searchTarget).get().then(snapshot => {
-       snapshot.docs.map(doc => {
-        //  console.log('doc data: ',doc.data());
-        batchArray.push(doc.data())
-      })
-      batchConverter(batchArray) //get the data batches and then add them to local storage no data is returned
-     })     
+    const snapshot = await queryData('batch_data', 'fileName', '==', searchTarget);
+    console.log('snapshot:', snapshot);
+    snapshot.docs.map(doc => {
+      batchArray.push(doc.data())
+    })
+
+    const loadedTable = await batchConverter(batchArray) //get the data batches and then add them to local storage no data is returned 
+    loadNewTable(loadedTable);
   }
 
 
@@ -163,7 +161,7 @@ const EventsDataProvider = (props) => {
 
     console.log('current update ', data)
     const eventInFocus = newTable.map(event => {
-      if (event.id === data.id){
+      if (event.id === data.id) {
         return event = data
       }
       return event
@@ -192,8 +190,8 @@ const EventsDataProvider = (props) => {
     })
     //console.log('event in focus: ', data.id, eventInFocus);
 
-    setCurrentTable({id: currentTable.id, table: eventInFocus})
-    localStorage.setItem('xoddCurrentTable', JSON.stringify({id: currentTable.id, table:eventInFocus}))
+    setCurrentTable({ id: currentTable.id, table: eventInFocus })
+    localStorage.setItem('xoddCurrentTable', JSON.stringify({ id: currentTable.id, table: eventInFocus }))
   }
 
   const addEventsTable = (data) => {
@@ -205,63 +203,63 @@ const EventsDataProvider = (props) => {
   }
 
   const saveEventStats = (e, goalEvents, newCard) => {
-    const id = newCard.id
+    // const id = newCard.id
 
 
-      e.preventDefault();
-      e.stopPropagation();
-      newCard.stats.goalEvents = goalEvents;
+    e.preventDefault();
+    e.stopPropagation();
+    newCard.stats.goalEvents = goalEvents;
 
-      //console.log('incoming goal events): ', goalEvents);
-      //console.log('check if this is a set', typeof newCard.stats.home.goal_timeStamps, newCard.stats.home.goal_timeStamps)
+    //console.log('incoming goal events): ', goalEvents);
+    //console.log('check if this is a set', typeof newCard.stats.home.goal_timeStamps, newCard.stats.home.goal_timeStamps)
 
-      goalEvents.forEach(goalEvent => {
-        //extract the timestamps from each goal event object and alocate them
-        if (goalEvent.team === 'home') {
-          const d = { ...newCard } //spreading the newcard state into a new object
+    goalEvents.forEach(goalEvent => {
+      //extract the timestamps from each goal event object and alocate them
+      if (goalEvent.team === 'home') {
+        const d = { ...newCard } //spreading the newcard state into a new object
 
-          d.stats.home.goal_timeStamps.add(goalEvent.timeStamp);
-          newCard = { ...d }
-        }
-        else if (goalEvent.team === 'away') {
-          const d = { ...newCard }
-
-          d.stats.away.goal_timeStamps.add(goalEvent.timeStamp);
-          newCard = { ...d }
-        }
-      })
-
-      //sort the timestamps in order
-      const homeTimeStamps = [...newCard.stats.home.goal_timeStamps].sort((a, b) => a - b);
-      const awayTimeStamps = [...newCard.stats.away.goal_timeStamps].sort((a, b) => a - b);
-
-      //console.log('after sorting: ', newCard)
-
-      newCard.stats.home.goal_timeStamps = homeTimeStamps;
-      newCard.stats.away.goal_timeStamps = awayTimeStamps;
-
-      const d = { ...newCard }
-      //check if there are home timestamps
-      if (homeTimeStamps.length > 0) {
-        d.stats.home.score = homeTimeStamps.length;
+        d.stats.home.goal_timeStamps.add(goalEvent.timeStamp);
         newCard = { ...d }
       }
-      else {
-        d.stats.home.score = 0;
-      }
+      else if (goalEvent.team === 'away') {
+        const d = { ...newCard }
 
-      //check if there are away timestamps
-      if (awayTimeStamps.length > 0) {
-        d.stats.away.score = awayTimeStamps.length;
+        d.stats.away.goal_timeStamps.add(goalEvent.timeStamp);
         newCard = { ...d }
       }
-      else {
-        d.stats.away.score = 0;
-        //console.log('d: ', d)
-      }
+    })
 
-      const validatedCard = validateScores(newCard, 'both_teams_to_score');
-      updateEvent(validatedCard)
+    //sort the timestamps in order
+    const homeTimeStamps = [...newCard.stats.home.goal_timeStamps].sort((a, b) => a - b);
+    const awayTimeStamps = [...newCard.stats.away.goal_timeStamps].sort((a, b) => a - b);
+
+    //console.log('after sorting: ', newCard)
+
+    newCard.stats.home.goal_timeStamps = homeTimeStamps;
+    newCard.stats.away.goal_timeStamps = awayTimeStamps;
+
+    const d = { ...newCard }
+    //check if there are home timestamps
+    if (homeTimeStamps.length > 0) {
+      d.stats.home.score = homeTimeStamps.length;
+      newCard = { ...d }
+    }
+    else {
+      d.stats.home.score = 0;
+    }
+
+    //check if there are away timestamps
+    if (awayTimeStamps.length > 0) {
+      d.stats.away.score = awayTimeStamps.length;
+      newCard = { ...d }
+    }
+    else {
+      d.stats.away.score = 0;
+      //console.log('d: ', d)
+    }
+
+    const validatedCard = validateScores(newCard, 'both_teams_to_score');
+    updateEvent(validatedCard)
 
     if (editCardWindowIsActive) {
       updateEditedEvent(validatedCard)
@@ -298,7 +296,8 @@ const EventsDataProvider = (props) => {
     switchCategory,
     saveEventStats,
     changeSearchTarget,
-    search
+    search,
+    loadNewTable
   }
 
   return (

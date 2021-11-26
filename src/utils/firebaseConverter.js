@@ -1,5 +1,4 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore';
+import {Timestamp} from 'firebase/firestore';
 
  export const Convert = (array) => {
    const arr  = JSON.parse(JSON.stringify(array)) 
@@ -8,7 +7,8 @@ import 'firebase/firestore';
    const newArr = arr.map(item => {
       const stats = Object.assign({}, item.stats.goalEvents)
       const date = new Date(item.stats.general.time)
-      const time =  firebase.firestore.Timestamp.fromDate(date)
+      const time =  Timestamp.fromDate(date)
+  
 
       item.stats.goalEvents = stats
       item.stats.general.time = time;

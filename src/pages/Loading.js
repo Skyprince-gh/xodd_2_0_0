@@ -6,13 +6,13 @@ import {uploadInterval} from '../utils/storage'
 class Loading extends Component {
   
   componentDidMount(){
-    const currentTable = JSON.parse(localStorage.getItem('xoddCurrentTable'))
+    // const currentTable = JSON.parse(localStorage.getItem('xoddCurrentTable'))
     const packagePorter = JSON.parse(localStorage.getItem('xoddPackagePorter'))
     const tempFiles = JSON.parse(localStorage.getItem('tempFiles'));
 
-    if(currentTable === null){
-      localStorage.setItem('xoddCurrentTable', JSON.stringify({id: '', table: []}))
-    }
+    // if(currentTable === null){
+    //   localStorage.setItem('xoddCurrentTable', JSON.stringify({id: '', table: []}))
+    // }
     if(packagePorter === null){
       localStorage.setItem('xoddPackagePorter', JSON.stringify({id: '', table: []}))
     }

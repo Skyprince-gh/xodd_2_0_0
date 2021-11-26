@@ -2,7 +2,7 @@ import React from 'react'
 import style from './OddsWindowMenu.module.css'
 import { useContext } from 'react'
 import { EventsContext } from '../context/EventsContext'
-import { Search } from '@material-ui/icons'
+// import { Search } from '@material-ui/icons'
 
 const OddsWindowMenu = () => {
   const { toggleEventsWindow, eventsWindowIsActive, switchCategory, currentCategory, changeSearchTarget, search } = useContext(EventsContext)
