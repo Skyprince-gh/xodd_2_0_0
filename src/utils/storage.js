@@ -56,7 +56,7 @@ const upload = () => {
       const convertedTable = Convert(porter.table)
 
       setDocument('match_event_tables',package_porter.id,convertedTable).then(response => {
-          console.log('updated data: ', convertedTable, new Date())
+          // console.log('updated data: ', convertedTable, new Date());
           localStorage.setItem('xoddPackagePorter', JSON.stringify(current_table))
 
       })

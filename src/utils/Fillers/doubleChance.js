@@ -46,11 +46,11 @@ const fill = async (convertedBatch, events) => {
       current.double_chance.prediction_code = '12';
       current.double_chance.prediction = 'home or away';
     }
-    else if (entry.prediction.toLowerCase().includes('1X')) {
+    else if (entry.prediction.toLowerCase().includes('1x') || entry.prediction.toLowerCase().includes('1X')) {
       current.double_chance.prediction_code = '1X';
       current.double_chance.prediction = 'home or draw';
     }
-    else if (entry.prediction.toLowerCase().includes('X2')) {
+    else if (entry.prediction.toLowerCase().includes('x2') || entry.prediction.toLowerCase().includes('X2')) {
       current.double_chance.prediction_code = 'X2';
       current.double_chance.prediction = 'away or draw';
     }

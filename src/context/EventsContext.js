@@ -1,9 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { MatchEventObject } from '../utils/dataObjects';
 import { validateScores } from '../utils/validation';
-import { queryData, addDocument } from '../Firebase/firebase';
-import { Convert } from '../utils/firebaseConverter';
+import { queryData, setDocument, getData, addDocument } from '../Firebase/firebase';
+import { Convert, ConvertToArray } from '../utils/firebaseConverter';
 import { batchConverter } from '../utils/batchConverter';
+import sortObjectsArray from 'sort-objects-array';
+// import {get}
 
 export const EventsContext = createContext();
 
@@ -20,7 +22,9 @@ const EventsDataProvider = (props) => {
   const [editIsActive, setEditActive] = useState(false);
   const [editCardWindowIsActive, setEditCardWindowIsActive] = useState(false);
   const [currentCategory, setCurrentCategory] = useState('win-draw-win');
-  const [searchTarget, setSearchTarget] = useState(new Date().toDateString())
+  const [searchTarget, setSearchTarget] = useState(new Date().toDateString());
+  const [searchEditTarget, setSearchEditTarget] = useState(new Date().toDateString());
+  const [sortObject, setSortObject] = useState({ order: 'ascending', sort: 'percentage' })
 
   useEffect(() => {
     getCurrentTable()
@@ -115,10 +119,12 @@ const EventsDataProvider = (props) => {
 
     console.log('converted Table: ', convertedTable)
     // Save the table that you have created. You can also create a feature to edit the table as well.\
-    const response = await addDocument('match_event_tables', convertedTable);
+    // const response = await addDocument('match_event_tables', convertedTable);
+    //store the table in firebase with a custom ID.
+    const response = await setDocument('match_event_tables', searchTarget, convertedTable)
 
-    localStorage.setItem('xoddCurrentTable', JSON.stringify({ id: response.id, table: newTable }));
-    localStorage.setItem('xoddPackagePorter', JSON.stringify({ id: response.id, table: newTable }));
+    localStorage.setItem('xoddCurrentTable', JSON.stringify({ id: response, table: newTable }));
+    localStorage.setItem('xoddPackagePorter', JSON.stringify({ id: response, table: newTable }));
     localStorage.setItem('xoddNewTable', JSON.stringify([]));//reset storage location      
     setNewTable([]);
     window.location.reload();
@@ -127,12 +133,16 @@ const EventsDataProvider = (props) => {
 
   const loadNewTable = (table) => {
     setNewTable(table);
+    localStorage.setItem('xoddNewTable', JSON.stringify(table))
   }
 
   //this function is triggered anytime the date in the seach parameters is changed
   const changeSearchTarget = (date) => {
     setSearchTarget(date);
-    console.log(date)
+  }
+
+  const changeSearchEditTarget = (date) => {
+    setSearchEditTarget(date);
   }
 
   //this function is triggered when the search button is pressed.
@@ -146,6 +156,72 @@ const EventsDataProvider = (props) => {
 
     const loadedTable = await batchConverter(batchArray) //get the data batches and then add them to local storage no data is returned 
     loadNewTable(loadedTable);
+  }
+
+  const searchEdit = async () => {
+    console.log('search edit target activated.')
+    // const batchArray = [];
+    const response = await getData('match_event_tables', searchEditTarget);
+
+    const converted = ConvertToArray(response.data())
+    if (response.data() !== null) {
+      console.log("Document data:", converted);
+      localStorage.setItem('xoddCurrentTable', JSON.stringify({ id: searchEditTarget, table: converted }));
+      window.location.reload(false);
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+    // const loadedTable = await batchConverter(batchArray) //get the data batches and then add them to local storage no data is returned 
+    // loadNewTable(loadedTable);
+  }
+
+  //this one orders files in ascending or descending order.
+  const orderFiles = (order) => {
+    if (order === 'ascending') {
+      //arrange everything in ascending order
+      setSortObject({
+        ...sortObject,
+        order: 'ascending'
+      })
+    }
+    else if (order === 'descending') {
+      //arrange everything in descending order
+      setSortObject({
+        ...sortObject,
+        order: 'descending'
+      })
+    }
+
+    sortFiles(sortObject)
+  }
+
+  //this function sorts files based on a property type
+  const sortFiles = (sortProperty) => {
+    if (sortObject.order === 'ascending') {
+      // //run sorts without any order parameter.
+      // let currentTable = JSON.parse(localStorage.getItem('xoddCurrentTable'))
+      // const sortedTablesortObject = sortObjectsArray(currentTable.table, 'percentage');
+      
+      // currentTable.table = sortedTablesortObject;
+      // localStorage.setItem('xoddCurrentTable', JSON.stringify(currentTable))
+      
+      const countries = [
+        { name: {firstName: 'Ahenkan', lastName:'Asante'}, age: 25, height: 5.10 },
+        { name: {firstName: 'Maxwell', lastName:'Biden'}, age: 20, height: 5.6 },
+        { name: {firstName: 'Yaa', lastName:'Jackson'}, age: 20, height: 5.4 },
+        { name: {firstName: 'Pomaa', lastName:'Kodua'}, age: 23, height: 5.5 },
+      ]
+      
+      const sortedTablesortObject = sortObjectsArray(countries, ['name','firstName']);
+      console.log('just sorted test:', sortedTablesortObject)
+
+    }
+    else if (sortObject.order === 'descending') {
+      //run sorts with the descending order parameter.
+    }
+
+    // window.location.reload(false)
   }
 
 
@@ -297,7 +373,11 @@ const EventsDataProvider = (props) => {
     saveEventStats,
     changeSearchTarget,
     search,
-    loadNewTable
+    loadNewTable,
+    changeSearchEditTarget,
+    searchEdit,
+    sortFiles,
+    orderFiles
   }
 
   return (

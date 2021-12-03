@@ -5,7 +5,7 @@ import { EventsContext } from '../context/EventsContext'
 // import { Search } from '@material-ui/icons'
 
 const OddsWindowMenu = () => {
-  const { toggleEventsWindow, eventsWindowIsActive, switchCategory, currentCategory, changeSearchTarget, search } = useContext(EventsContext)
+  const { toggleEventsWindow, eventsWindowIsActive, switchCategory, currentCategory, changeSearchTarget, changeSearchEditTarget, search, searchEdit, orderFiles, sortFiles } = useContext(EventsContext)
   return (
     <div className={style.menu}>
       <form>
@@ -35,9 +35,13 @@ const OddsWindowMenu = () => {
           !eventsWindowIsActive &&
           <div className={style.menu_group}>
             <label htmlFor="sort">Sort by: </label>
-            <select name="sort">
-              <option value="ascending">ascending</option>
-              <option value="ascending">descending</option>
+            <select name="sort"
+              onChange={e => {
+                console.log('changed sorting order:', e.target.value)
+                orderFiles(e.target.value)
+              }}>
+              <option value="ascending">Ascending</option>
+              <option value="descending">Descending</option>
             </select>
           </div>
         }
@@ -47,25 +51,52 @@ const OddsWindowMenu = () => {
 
           <div className={style.menu_group}>
             <label htmlFor="order">Order by: </label>
-            <select name="order">
-              <option value="name">Name</option>
+            <select name="order"
+              onChange = {e => {
+                console.log('sorting type changed:', e.target.value)
+                sortFiles();
+              }}
+            >
+              {/* <option value="name">Name</option> */}
               <option value="percentage">Percentage</option>
               <option value="time">Time</option>
-              <option value="prediction">prediction</option>
+              <option value="prediction">Prediction</option>
             </select>
           </div>
         }
 
-        <div className={style.menu_group}>
-          <label htmlFor="date">Date</label>
-          <div>
+        {
+          eventsWindowIsActive &&
 
-            <input
-              onChange={e => { changeSearchTarget(e.target.value) }}
-              onBlur={search}
-              type="date" />
+          <div className={style.menu_group}>
+            <label htmlFor="date">Date</label>
+            <div>
+
+              <input
+                onChange={e => { changeSearchTarget(e.target.value) }}
+                onBlur={search}
+                type="date" />
+            </div>
           </div>
-        </div>
+        }
+
+        {/* this will be shown in normal mode */}
+        {
+          !eventsWindowIsActive &&
+
+          <div className={style.menu_group}>
+            <label htmlFor="date">Date</label>
+            <div>
+
+              <input
+                onChange={e => { changeSearchEditTarget(e.target.value) }}
+                onBlur={searchEdit}
+                type="date"
+              />
+            </div>
+          </div>
+        }
+
 
       </form>
 

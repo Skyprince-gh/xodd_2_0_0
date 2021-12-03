@@ -1,5 +1,5 @@
-import {initializeApp} from 'firebase/app'
-import { getFirestore, collection, getDocs, query, addDoc, where, doc, setDoc } from 'firebase/firestore'
+import { initializeApp } from 'firebase/app'
+import { getFirestore, collection, getDocs, query, addDoc, where, doc, setDoc, getDoc } from 'firebase/firestore'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBW2iYBruhcBbjwI3qtNtTSVa79159X1VE",
@@ -13,7 +13,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const db =  getFirestore(app) 
+const db = getFirestore(app)
 
 export const queryData = async (_collection, ...params) => {
   const dataQuery = query(
@@ -32,5 +32,14 @@ export const addDocument = async (_collection, data) => {
 
 export const setDocument = async (_collection, documentID, data) => {
   const response = await setDoc(doc(db, _collection, documentID), data);
-  return response
+  console.log()
+  return documentID
+}
+
+export const getData = async (_collection, fileName) => {
+  const docRef = doc(db, _collection, fileName);
+  console.log('docRef:',docRef)
+  const docSnap = await getDoc(docRef);
+
+  return docSnap
 }
