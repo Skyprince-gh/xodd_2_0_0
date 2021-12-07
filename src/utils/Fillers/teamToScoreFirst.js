@@ -40,17 +40,17 @@ const fill = (convertedBatch, events) => {
     current.team_to_score_first.odds.home = +entry.odds.home;
     current.team_to_score_first.odds.away = +entry.odds.away;
     current.team_to_score_first.odds.none = +entry.odds.none;
-    current.team_to_score_first.prediction = entry.prediction.toLowerCase();
+    // current.team_to_score_first.prediction = entry.prediction.toLowerCase();
 
-    if (entry.prediction.toLowerCase().includes('home first')) {
-      current.team_to_score_first.prediction_code = '1';
-    }
-    else if (entry.prediction.toLowerCase().includes('away first')) {
-      current.team_to_score_first.prediction_code = '2';
-    }
-    else if (entry.prediction.toLowerCase().includes('none')) {
-      current.team_to_score_first.prediction_code = '0';
-    }
+    // if (entry.prediction.toLowerCase().includes('home first')) {
+    //   current.team_to_score_first.prediction_code = '1';
+    // }
+    // else if (entry.prediction.toLowerCase().includes('away first')) {
+    //   current.team_to_score_first.prediction_code = '2';
+    // }
+    // else if (entry.prediction.toLowerCase().includes('none')) {
+    //   current.team_to_score_first.prediction_code = '0';
+    // }
 
   })
 

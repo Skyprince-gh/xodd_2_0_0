@@ -4,7 +4,10 @@ import { validateScores } from '../utils/validation';
 import { queryData, setDocument, getData, addDocument } from '../Firebase/firebase';
 import { Convert, ConvertToArray } from '../utils/firebaseConverter';
 import { batchConverter } from '../utils/batchConverter';
-import sortObjectsArray from 'sort-objects-array';
+import convertToUnderScore from '../utils/convertDashesToUnderScore';
+import deepSort from 'deep-sort';
+import convertDashesToUnderScore from '../utils/convertDashesToUnderScore';
+
 // import {get}
 
 export const EventsContext = createContext();
@@ -24,8 +27,7 @@ const EventsDataProvider = (props) => {
   const [currentCategory, setCurrentCategory] = useState('win-draw-win');
   const [searchTarget, setSearchTarget] = useState(new Date().toDateString());
   const [searchEditTarget, setSearchEditTarget] = useState(new Date().toDateString());
-  const [sortObject, setSortObject] = useState({ order: 'ascending', sort: 'percentage' })
-
+  const [sortObject, setSortObject] = useState({ 'order': 'ascending', 'sort': 'percentage' });
   useEffect(() => {
     getCurrentTable()
   }, [])
@@ -166,8 +168,9 @@ const EventsDataProvider = (props) => {
     const converted = ConvertToArray(response.data())
     if (response.data() !== null) {
       console.log("Document data:", converted);
+      setCurrentTable({ id: searchEditTarget, table: converted })
       localStorage.setItem('xoddCurrentTable', JSON.stringify({ id: searchEditTarget, table: converted }));
-      window.location.reload(false);
+      // window.location.reload(false);
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");
@@ -178,49 +181,73 @@ const EventsDataProvider = (props) => {
 
   //this one orders files in ascending or descending order.
   const orderFiles = (order) => {
+    console.log('sorting order:', order)
     if (order === 'ascending') {
-      //arrange everything in ascending order
-      setSortObject({
-        ...sortObject,
-        order: 'ascending'
-      })
+      sortFiles(sortObject.sort, 'asc')
     }
     else if (order === 'descending') {
       //arrange everything in descending order
-      setSortObject({
-        ...sortObject,
-        order: 'descending'
-      })
+      console.log('order switched to descending')
+      sortFiles(sortObject.sort, 'desc')
     }
-
-    sortFiles(sortObject)
   }
 
+
   //this function sorts files based on a property type
-  const sortFiles = (sortProperty) => {
-    if (sortObject.order === 'ascending') {
-      // //run sorts without any order parameter.
-      // let currentTable = JSON.parse(localStorage.getItem('xoddCurrentTable'))
-      // const sortedTablesortObject = sortObjectsArray(currentTable.table, 'percentage');
+  const sortFiles = (sortProperty = 'time', order) => {
+
+    if (sortProperty === 'time') {
+      setSortObject({
+        ...sortObject,
+        sort: 'time'
+      })
+
+      let _currentTable = JSON.parse(localStorage.getItem('xoddCurrentTable'))
+      const sortedTable = deepSort(_currentTable.table, 'stats.general.time', order);
+      console.log('just sorted test:', sortedTable)
       
-      // currentTable.table = sortedTablesortObject;
-      // localStorage.setItem('xoddCurrentTable', JSON.stringify(currentTable))
+      _currentTable.table = sortedTable;
+      setCurrentTable(_currentTable)
+      localStorage.setItem('xoddCurrentTable', JSON.stringify(_currentTable));
       
-      const countries = [
-        { name: {firstName: 'Ahenkan', lastName:'Asante'}, age: 25, height: 5.10 },
-        { name: {firstName: 'Maxwell', lastName:'Biden'}, age: 20, height: 5.6 },
-        { name: {firstName: 'Yaa', lastName:'Jackson'}, age: 20, height: 5.4 },
-        { name: {firstName: 'Pomaa', lastName:'Kodua'}, age: 23, height: 5.5 },
-      ]
+    }
+    
+    else if (sortProperty === 'percentage') {
+      setSortObject({
+        ...sortObject,
+        sort: 'percentage'
+      })
       
-      const sortedTablesortObject = sortObjectsArray(countries, ['name','firstName']);
-      console.log('just sorted test:', sortedTablesortObject)
+      let conv = convertDashesToUnderScore(currentCategory);
+      console.log('converted string:', conv);
+      let _currentTable = JSON.parse(localStorage.getItem('xoddCurrentTable'))
+      const sortedTable = deepSort(_currentTable.table, `${conv}.percentage`, order);
+      
+      console.log('just sorted test:', sortedTable);
+
+      _currentTable.table = sortedTable;
+      setCurrentTable(_currentTable)
+      localStorage.setItem('xoddCurrentTable', JSON.stringify(_currentTable));
+      
+    }
+    else if (sortProperty === 'prediction') {
+      setSortObject({
+        ...sortObject,
+        sort: 'prediction'
+      })
+      
+      let conv = convertDashesToUnderScore(currentCategory);
+      console.log('converted string:', conv);
+      let _currentTable = JSON.parse(localStorage.getItem('xoddCurrentTable'))
+      const sortedTable = deepSort(_currentTable.table, `${conv}.prediction`, order);
+      
+      console.log('just sorted test:', sortedTable);
+
+      _currentTable.table = sortedTable;
+      setCurrentTable(_currentTable)
+      localStorage.setItem('xoddCurrentTable', JSON.stringify(_currentTable));
 
     }
-    else if (sortObject.order === 'descending') {
-      //run sorts with the descending order parameter.
-    }
-
     // window.location.reload(false)
   }
 
@@ -354,7 +381,8 @@ const EventsDataProvider = (props) => {
     editIsActive,
     editCardWindowIsActive,
     editInfo,
-    currentCategory
+    currentCategory,
+    sortObject
   }
   const functions = {
     // getUnsavedTable

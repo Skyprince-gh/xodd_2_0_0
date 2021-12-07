@@ -37,14 +37,14 @@ const fill = async (convertedBatch, events) => {
     current.over_five_point_five.percentage = +entry.percentage.split('%')[0]; //get the percentage in string format and then convert it to number after spliting the % sign from it
     current.over_five_point_five.odds.over = +entry.odds.over;
     current.over_five_point_five.odds.under = +entry.odds.under;
-    current.over_five_point_five.prediction = entry.prediction.toLowerCase();
+    // current.over_five_point_five.prediction = entry.prediction.toLowerCase();
 
-    if (entry.prediction.toLowerCase().includes('over 5.5')) {
-      current.over_five_point_five.prediction_code = '1';
-    }
-    else if (entry.prediction.toLowerCase().includes('under 5.5')) {
-      current.over_five_point_five.prediction_code = '0';
-    }
+    // if (entry.prediction.toLowerCase().includes('over 5.5')) {
+    //   current.over_five_point_five.prediction_code = '1';
+    // }
+    // else if (entry.prediction.toLowerCase().includes('under 5.5')) {
+    //   current.over_five_point_five.prediction_code = '0';
+    // }
 
   })
 

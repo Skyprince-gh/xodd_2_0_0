@@ -41,17 +41,17 @@ const fill = async (convertedBatch, events, fileName) => {
     event.win_draw_win.odds.home = +batch.odds.home;
     event.win_draw_win.odds.draw = +batch.odds.draw;
     event.win_draw_win.odds.away = +batch.odds.away;
-    event.win_draw_win.prediction = batch.prediction.toLowerCase();
+    // event.win_draw_win.prediction = batch.prediction.toLowerCase();
     
-    if (batch.prediction.toLowerCase().includes('home win')) {
-      event.win_draw_win.prediction_code = '1'
-    }
-    else if (batch.prediction.toLowerCase().includes('away win')) {
-      event.win_draw_win.prediction_code = '2'
-    }
-    else if (batch.prediction.toLowerCase().includes('draw')) {
-      event.win_draw_win.prediction_code = 'X'
-    }
+    // if (batch.prediction.toLowerCase().includes('home win')) {
+    //   event.win_draw_win.prediction_code = '1'
+    // }
+    // else if (batch.prediction.toLowerCase().includes('away win')) {
+    //   event.win_draw_win.prediction_code = '2'
+    // }
+    // else if (batch.prediction.toLowerCase().includes('draw')) {
+    //   event.win_draw_win.prediction_code = 'X'
+    // }
     
     events.push(event)
   })

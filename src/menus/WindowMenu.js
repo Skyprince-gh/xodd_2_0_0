@@ -5,7 +5,7 @@ import { EventsContext } from '../context/EventsContext'
 // import { Search } from '@material-ui/icons'
 
 const OddsWindowMenu = () => {
-  const { toggleEventsWindow, eventsWindowIsActive, switchCategory, currentCategory, changeSearchTarget, changeSearchEditTarget, search, searchEdit, orderFiles, sortFiles } = useContext(EventsContext)
+  const { toggleEventsWindow, eventsWindowIsActive, switchCategory, currentCategory, changeSearchTarget, changeSearchEditTarget, search, searchEdit, orderFiles, sortFiles, sortObject } = useContext(EventsContext)
   return (
     <div className={style.menu}>
       <form>
@@ -37,7 +37,7 @@ const OddsWindowMenu = () => {
             <label htmlFor="sort">Sort by: </label>
             <select name="sort"
               onChange={e => {
-                console.log('changed sorting order:', e.target.value)
+                // console.log('changed sorting order:', e.target.value)
                 orderFiles(e.target.value)
               }}>
               <option value="ascending">Ascending</option>
@@ -54,11 +54,12 @@ const OddsWindowMenu = () => {
             <select name="order"
               onChange = {e => {
                 console.log('sorting type changed:', e.target.value)
-                sortFiles();
+                sortFiles(e.target.value, 'asc');
               }}
+              value={sortObject.sort}
             >
               {/* <option value="name">Name</option> */}
-              <option value="percentage">Percentage</option>
+              <option value="percentage" defaultValue>Percentage</option>
               <option value="time">Time</option>
               <option value="prediction">Prediction</option>
             </select>

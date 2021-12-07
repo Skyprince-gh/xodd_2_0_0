@@ -16,10 +16,10 @@ import React, {useContext} from 'react'
 import {EventsContext} from '../context/EventsContext'
 // import
 const List = () => {
-  const currentTable = JSON.parse(localStorage.getItem('xoddCurrentTable'))
-  const {currentCategory} = useContext(EventsContext)
-  
+  // const currentTable = JSON.parse(localStorage.getItem('xoddCurrentTable'))
+  const {currentCategory, currentTable} = useContext(EventsContext)
   return ( 
+    
     <ul>
       {currentTable.table.length > 0 ?currentTable.table.map((item)=>{
         let category = <WinDrawWinCard data={item}/>

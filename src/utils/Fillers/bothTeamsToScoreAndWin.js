@@ -39,17 +39,17 @@ const fill = async (convertedBatch, events) => {
     current.both_teams_to_score_and_win.odds.home = +entry.odds.home;
     current.both_teams_to_score_and_win.odds.draw = +entry.odds.draw;
     current.both_teams_to_score_and_win.odds.away = +entry.odds.away;
-    current.both_teams_to_score_and_win.prediction = entry.prediction.toLowerCase();
+    // current.both_teams_to_score_and_win.prediction = entry.prediction.toLowerCase();
 
-    if (entry.prediction.toLowerCase().includes('btts home')) {
-      current.both_teams_to_score_and_win.prediction_code = '1';
-    }
-    else if (entry.prediction.toLowerCase().includes('btts away')) {
-      current.both_teams_to_score_and_win.prediction_code = '2';
-    }
-    else if (entry.prediction.toLowerCase().includes('btts draw')) {
-      current.both_teams_to_score_and_win.prediction_code = 'X';
-    }
+    // if (entry.prediction.toLowerCase().includes('btts home')) {
+    //   current.both_teams_to_score_and_win.prediction_code = '1';
+    // }
+    // else if (entry.prediction.toLowerCase().includes('btts away')) {
+    //   current.both_teams_to_score_and_win.prediction_code = '2';
+    // }
+    // else if (entry.prediction.toLowerCase().includes('btts draw')) {
+    //   current.both_teams_to_score_and_win.prediction_code = 'X';
+    // }
 
   })
 
